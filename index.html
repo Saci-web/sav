@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Request Forum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            height: 8px;
+            background: linear-gradient(to right, #34D399, #FBBF24, #EF4444);
+            border-radius: 4px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-top: -4px;
+        }
+        input[type="range"]::-moz-range-track {
+            height: 8px;
+            background: linear-gradient(to right, #34D399, #FBBF24, #EF4444);
+            border-radius: 4px;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const data = {
+                clientName: form.clientName.value,
+                clientEmail: form.clientEmail.value,
+                clientPhone: form.clientPhone.value,
+                requestDetails: form.requestDetails.value,
+                urgency: form.urgency.value
+            };
+            const response = await fetch('https://script.google.com/macros/s/AKfycbxxN0wih7nlqXrlu7Dot7C8dPZxE6d20J4nC8i3qn3pKerGX6w1li8hECDRnpbUUsfccA/exec', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const result = await response.json();
+            if (result.result === 'success') {
+                alert('Request sent successfully!');
+                form.reset();
+            } else {
+                alert('Failed to send request.');
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <header class="flex justify-between items-center py-4">
+            <h1 class="text-2xl font-bold">Client Request Forum</h1>
+        </header>
+
+        <main>
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">Send a New Request</h2>
+                <form class="bg-white p-6 rounded shadow-md" onsubmit="handleSubmit(event)">
+                    <div class="mb-4">
+                        <label for="clientName" class="block text-gray-700">Client Name</label>
+                        <input type="text" id="clientName" name="clientName" class="w-full p-2 border border-gray-300 rounded mt-1" placeholder="Enter client name (optional)">
+                    </div>
+                    <div class="mb-4">
+                        <label for="clientEmail" class="block text-gray-700">Client Email</label>
+                        <input type="email" id="clientEmail" name="clientEmail" class="w-full p-2 border border-gray-300 rounded mt-1" placeholder="Enter client email (optional)">
+                    </div>
+                    <div class="mb-4">
+                        <label for="clientPhone" class="block text-gray-700">Client Phone Number</label>
+                        <input type="tel" id="clientPhone" name="clientPhone" class="w-full p-2 border border-gray-300 rounded mt-1" placeholder="Enter client phone number (optional)">
+                    </div>
+                    <div class="mb-4">
+                        <label for="requestDetails" class="block text-gray-700">Request Details</label>
+                        <textarea id="requestDetails" name="requestDetails" class="w-full p-2 border border-gray-300 rounded mt-1" placeholder="Enter request details (optional)"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="urgency" class="block text-gray-700">Degree of Urgency</label>
+                        <input type="range" id="urgency" name="urgency" min="1" max="5" class="w-full mt-1" aria-label="Urgency Level">
+                        <div class="flex justify-between text-gray-600 text-sm mt-1">
+                            <span>Low</span>
+                            <span>High</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Send Request</button>
+                </form>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
